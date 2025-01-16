@@ -1,0 +1,4 @@
+/api/*  https://api.hive.blog:splat 200
+/api/*  https://api.hivekings.com:splat 200
+/api/*  https://anyx.io:splat 200
+/api/*  https://api.openhive.network:splat 200
