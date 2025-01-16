@@ -11,19 +11,29 @@ const Post: React.FC = () => {
 
   useEffect(() => {
     const fetchPost = async () => {
-      const post = await getPost(author, permlink);
-      setPost(post);
+      if (!author || !permlink) {
+        console.error('Author or permlink is missing');
+        return;
+      }
+      try {
+        const post = await getPost(author, permlink);
+        setPost(post);
+      } catch (error) {
+        console.error('Error fetching post:', error);
+      }
     };
     fetchPost();
   }, [author, permlink, getPost]);
 
-  if (!post) return <div>Loading...</div>;
+  if (!post) return <div className="text-center py-8">Loading...</div>;
 
   return (
-    <div>
-      <h1>{post.title}</h1>
-      <p>By {post.author}</p>
-      <MarkdownRenderer content={post.body} />
+    <div className="p-4">
+      <h1 className="text-3xl font-bold mb-6">{post.title}</h1>
+      <p className="text-gray-500 mb-4">By {post.author}</p>
+      <div className="prose max-w-none">
+        <MarkdownRenderer content={post.body} />
+      </div>
     </div>
   );
 };
