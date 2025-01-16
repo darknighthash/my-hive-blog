@@ -1,6 +1,6 @@
 import { Client } from '@hiveio/dhive';
 
-const node=JSON.parse(import.meta.env.VITE_HIVE_NODE)
+const node=import.meta.env.VITE_HIVE_NODE.split(',');
 
 const client = new Client(node);
 
