@@ -1,0 +1,16 @@
+{
+    "headers": [
+      {
+        "source": "/*", 
+        "headers": [
+          {
+            "key": "Access-Control-Allow-Origin",
+            "value": "https://api.hive.blog, https://api.hivekings.com, https://anyx.io, https://api.openhive.network"
+          },
+          { "key": "Access-Control-Allow-Methods", "value": "GET, POST, PUT, DELETE" },
+          { "key": "Access-Control-Allow-Headers", "value": "Content-Type, Authorization" }
+        ]
+      }
+    ]
+  }
+  
