@@ -1,0 +1,17 @@
+{
+    "jsc": {
+      "parser": {
+        "syntax": "typescript", // 支持 TypeScript
+        "tsx": true // 支持 TSX
+      },
+      "transform": {
+        "react": {
+          "runtime": "automatic" // 使用 React 17+ 的自动运行时
+        }
+      },
+      "target": "es2021" // 目标 ES 版本
+    },
+    "module": {
+      "type": "es6" // 输出 ES 模块
+    }
+  }
