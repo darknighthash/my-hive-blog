@@ -8,6 +8,13 @@ interface MarkdownRendererProps {
   content: string;
 }
 
+// 修改 CodeProps，确保 children 是可选的
+interface CodeProps {
+  inline?: boolean;
+  className?: string;
+  children?: React.ReactNode; // 将 children 设置为可选
+}
+
 const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content }) => {
   return (
     <ReactMarkdown
@@ -17,7 +24,7 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content }) => {
           // 定制 img 渲染
           <ImageRenderer {...props} />
         ),
-        code: ({ node, inline, className, children, ...props }) => (
+        code: ({ inline, className, children, ...props }: CodeProps) => (
           // 定制代码渲染
           <CodeRenderer inline={inline} className={className} {...props}>
             {children}
