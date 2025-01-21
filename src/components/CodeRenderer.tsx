@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { dracula } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'; // 导入 dark+ 主题
 
 interface CodeRendererProps {
   inline?: boolean;
@@ -19,38 +19,36 @@ const CodeRenderer: React.FC<CodeRendererProps> = ({ inline, className, children
     }
   };
 
-  const match = /language-(\w+)/.exec(className || '');
+  // 判断是否为多行代码块
+  const isMultiLineCodeBlock = !inline && String(children).includes('\n');
 
-  // 如果是代码块（非内联），使用 SyntaxHighlighter 并显示复制按钮
-  if (!inline && match) {
+  // 如果是多行代码块，使用 SyntaxHighlighter 并显示复制按钮
+  if (isMultiLineCodeBlock) {
     return (
-      <div style={{ position: 'relative' }}>
-        <button
-          onClick={handleCopy}
-          style={{
-            position: 'absolute',
-            top: '8px',
-            right: '8px',
-            padding: '4px 8px',
-            fontSize: '12px',
-            background: isCopied ? '#4caf50' : '#333',
-            color: '#fff',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            zIndex: 10,
-          }}
-        >
-          {isCopied ? 'Copied!' : 'Copy'}
-        </button>
-        <SyntaxHighlighter style={dracula} language={match[1]} PreTag="div">
-          {String(children).replace(/\n$/, '')}
-        </SyntaxHighlighter>
+      <div className="flex justify-center"> {/* 水平居中 */}
+        <div className="relative w-full max-w-4xl min-w-[300px]"> {/* 设置最大宽度和最小宽度 */}
+          <button
+            onClick={handleCopy}
+            className={`absolute top-2 right-2 px-2 py-1 text-xs ${
+              isCopied ? 'bg-green-500' : 'bg-gray-700'
+            } text-white border-none rounded cursor-pointer z-10 hover:bg-gray-600 transition-colors`}
+          >
+            {isCopied ? 'Copied!' : 'Copy'}
+          </button>
+          <SyntaxHighlighter
+            style={vscDarkPlus}
+            language="text"
+            PreTag="div"
+            className="rounded-lg overflow-x-auto bg-gray-900 p-4" // 添加灰色背景、内边距和圆角
+          >
+            {String(children).replace(/\n$/, '')}
+          </SyntaxHighlighter>
+        </div>
       </div>
     );
   }
 
-  // 如果是内联代码，直接渲染为 <code>
+  // 如果是单行代码或内联代码，直接渲染为 <code>
   return <code className={className}>{children}</code>;
 };
 

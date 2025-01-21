@@ -3,33 +3,37 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import ImageRenderer from './ImageRenderer';
 import CodeRenderer from './CodeRenderer';
+import { H2, H3, H4 } from './Headings'; // 导入标题组件
 
 interface MarkdownRendererProps {
   content: string;
 }
 
-// 修改 CodeProps，确保 children 是可选的
 interface CodeProps {
   inline?: boolean;
   className?: string;
-  children?: React.ReactNode; // 将 children 设置为可选
+  children?: React.ReactNode;
 }
 
 const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content }) => {
   return (
     <ReactMarkdown
-      remarkPlugins={[remarkGfm]} // 启用 GFM (如表格、任务列表)
+      remarkPlugins={[remarkGfm]}
       components={{
-        img: ({ node, ...props }) => (
-          // 定制 img 渲染
-          <ImageRenderer {...props} />
-        ),
+        // 自定义图片渲染
+        img: ({ node, ...props }) => <ImageRenderer {...props} />,
+
+        // 自定义代码渲染
         code: ({ inline, className, children, ...props }: CodeProps) => (
-          // 定制代码渲染
           <CodeRenderer inline={inline} className={className} {...props}>
             {children}
           </CodeRenderer>
         ),
+
+        // 自定义标题渲染
+        h2: ({ node, ...props }) => <H2 {...props} />, // 使用 H2 组件
+        h3: ({ node, ...props }) => <H3 {...props} />, // 使用 H3 组件
+        h4: ({ node, ...props }) => <H4 {...props} />, // 使用 H4 组件
       }}
     >
       {content}

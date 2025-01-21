@@ -4,7 +4,7 @@ const Footer: React.FC = () => {
   return (
     <footer className="footer footer-center p-4 bg-base-200 text-base-content">
       <div>
-        <p>© 2023 My-Hive-Blog. All rights reserved.</p>
+        <p>© 2025 My-Hive-Blog. All rights reserved.</p>
         <div className="flex space-x-4 mt-2">
           <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" className="fill-current">
