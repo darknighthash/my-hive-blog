@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'; // 导入 dark+ 主题
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 interface CodeRendererProps {
   inline?: boolean;
@@ -13,20 +13,28 @@ const CodeRenderer: React.FC<CodeRendererProps> = ({ inline, className, children
 
   const handleCopy = () => {
     if (children) {
-      navigator.clipboard.writeText(String(children).replace(/\n$/, ''));
+      const codeString = React.Children.toArray(children).join('').replace(/\n$/, '');
+      navigator.clipboard.writeText(codeString);
       setIsCopied(true);
-      setTimeout(() => setIsCopied(false), 2000); // 2秒后恢复按钮状态
+      setTimeout(() => setIsCopied(false), 2000);
     }
   };
 
-  // 判断是否为多行代码块
-  const isMultiLineCodeBlock = !inline && String(children).includes('\n');
+  // 动态提取语言类型
+  const language = className?.startsWith('language-')
+    ? className.replace('language-', '')
+    : 'text';
 
-  // 如果是多行代码块，使用 SyntaxHighlighter 并显示复制按钮
-  if (isMultiLineCodeBlock) {
+  // 将子组件内容转为纯字符串
+  const codeString = React.Children.toArray(children).join('').replace(/\n$/, '');
+
+  // 判断是否为多行代码块（存在换行符）
+  const isMultiLineCodeBlock = codeString.includes('\n');
+
+  if (!inline && isMultiLineCodeBlock) {
     return (
-      <div className="flex justify-center"> {/* 水平居中 */}
-        <div className="relative w-full max-w-4xl min-w-[300px]"> {/* 设置最大宽度和最小宽度 */}
+      <div className="flex justify-center">
+        <div className="relative w-full max-w-4xl min-w-[300px]">
           <button
             onClick={handleCopy}
             className={`absolute top-2 right-2 px-2 py-1 text-xs ${
@@ -37,19 +45,22 @@ const CodeRenderer: React.FC<CodeRendererProps> = ({ inline, className, children
           </button>
           <SyntaxHighlighter
             style={vscDarkPlus}
-            language="text"
-            PreTag="div"
-            className="rounded-lg overflow-x-auto bg-gray-900 p-4" // 添加灰色背景、内边距和圆角
+            language={language}
+            className="rounded-lg overflow-x-auto bg-gray-900 p-4 text-white"
           >
-            {String(children).replace(/\n$/, '')}
+            {codeString}
           </SyntaxHighlighter>
         </div>
       </div>
     );
   }
 
-  // 如果是单行代码或内联代码，直接渲染为 <code>
-  return <code className={className}>{children}</code>;
+  // 如果是单行代码，直接渲染为 <code>
+  return (
+    <code className={className}>
+      {children}
+    </code>
+  );
 };
 
 export default CodeRenderer;

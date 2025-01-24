@@ -12,13 +12,13 @@ const ImageRenderer: React.FC<ImageRendererProps> = ({ src, alt }) => {
   }
 
   return (
-    <div className="flex justify-center items-center mx-auto max-w-full h-full">
+    <span className="flex justify-center items-center mx-auto max-w-full h-full">
       <img
         src={src}
         alt={alt || ''}
         className="max-w-full h-auto max-h-[50vh]"
       />
-    </div>
+    </span>
   );
 };
 
